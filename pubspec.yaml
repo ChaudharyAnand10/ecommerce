@@ -47,6 +47,12 @@ dependencies:
   intl: ^0.20.2
   path_provider: ^2.1.5
   readmore: ^3.0.0
+  firebase_core: ^4.2.1
+  firebase_auth: ^6.1.2
+  cloud_firestore: ^6.1.0
+  google_sign_in: 6.3.0
+  get_storage: ^2.1.1
+  connectivity_plus: ^7.0.0
 
 dev_dependencies:
   flutter_test:

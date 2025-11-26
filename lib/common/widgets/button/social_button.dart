@@ -1,5 +1,6 @@
-
+import 'package:ecommerce/features/authentication/controllers/login/login_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../utils/constants/colors.dart';
 import '../../../utils/constants/images.dart';
@@ -12,26 +13,31 @@ class USocialButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(LoginController());
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        buildButton(UImages.googleIcon , (){}),
-        SizedBox(width: USizes.spaceBtwItems,),
-        buildButton(UImages.facebookIcon , (){}),
-
-
+        buildButton(UImages.googleIcon, controller.googeSignIn),
+        SizedBox(
+          width: USizes.spaceBtwItems,
+        ),
+        buildButton(UImages.facebookIcon, () {}),
       ],
     );
   }
 
-  Container buildButton(String image , VoidCallback onPressed) {
+  Container buildButton(String image, VoidCallback onPressed) {
     return Container(
-        decoration: BoxDecoration(
-            border: Border.all(color: UColors.grey),
-            borderRadius: BorderRadius.circular(100)
-        ),
-        child: IconButton(onPressed: (){}, icon: Image.asset(image, height: USizes.iconMd, width: USizes.iconMd,)),
-
-      );
+      decoration: BoxDecoration(
+          border: Border.all(color: UColors.grey),
+          borderRadius: BorderRadius.circular(100)),
+      child: IconButton(
+          onPressed: () {},
+          icon: Image.asset(
+            image,
+            height: USizes.iconMd,
+            width: USizes.iconMd,
+          )),
+    );
   }
 }
