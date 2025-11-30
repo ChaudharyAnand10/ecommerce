@@ -1,6 +1,10 @@
+import 'package:ecommerce/data/repositories/category/category_repository.dart';
+import 'package:ecommerce/data/repositories/user/user_repository.dart';
+import 'package:ecommerce/dummy_data.dart';
 import 'package:ecommerce/features/authentication/screens/login/login.dart';
 import 'package:ecommerce/features/authentication/screens/onboarding/onboarding.dart';
 import 'package:ecommerce/features/authentication/screens/signup/verify_email.dart';
+import 'package:ecommerce/features/personalization/controllers/user_controller.dart';
 import 'package:ecommerce/navigation_menu.dart';
 import 'package:ecommerce/utils/exceptions/firebase_auth_exceptions.dart';
 import 'package:ecommerce/utils/exceptions/firebase_exceptions.dart';
@@ -20,11 +24,14 @@ class AuthenticationRepository extends GetxController {
 
   final _auth = FirebaseAuth.instance;
 
+  User? get currentUser => _auth.currentUser;
+
   @override
   void onReady() {
     FlutterNativeSplash.remove();
 
     screenRedirect();
+
   }
 
   void screenRedirect() {
@@ -56,7 +63,7 @@ class AuthenticationRepository extends GetxController {
       throw UFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
       throw UFirebaseException(e.code).message;
-    } on FormatException catch (e) {
+    } on FormatException catch (_) {
       throw UFormatException();
     } on PlatformException catch (e) {
       throw UPlatformException(e.code).message;
@@ -76,7 +83,7 @@ class AuthenticationRepository extends GetxController {
       throw UFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
       throw UFirebaseException(e.code).message;
-    } on FormatException catch (e) {
+    } on FormatException catch (_) {
       throw UFormatException();
     } on PlatformException catch (e) {
       throw UPlatformException(e.code).message;
@@ -103,7 +110,7 @@ class AuthenticationRepository extends GetxController {
       throw UFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
       throw UFirebaseException(e.code).message;
-    } on FormatException catch (e) {
+    } on FormatException catch (_) {
       throw UFormatException();
     } on PlatformException catch (e) {
       throw UPlatformException(e.code).message;
@@ -119,7 +126,7 @@ class AuthenticationRepository extends GetxController {
       throw UFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
       throw UFirebaseException(e.code).message;
-    } on FormatException catch (e) {
+    } on FormatException catch (_) {
       throw UFormatException();
     } on PlatformException catch (e) {
       throw UPlatformException(e.code).message;
@@ -135,7 +142,26 @@ class AuthenticationRepository extends GetxController {
       throw UFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
       throw UFirebaseException(e.code).message;
-    } on FormatException catch (e) {
+    } on FormatException catch (_) {
+      throw UFormatException();
+    } on PlatformException catch (e) {
+      throw UPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Something went wrong . Please try gain';
+    }
+  }
+
+  Future<void> reAuthenticateUserWithEmailAndPassword(
+      String email, String password) async {
+    try {
+      AuthCredential credential =
+          EmailAuthProvider.credential(email: email, password: password);
+      await currentUser!.reauthenticateWithCredential(credential);
+    } on FirebaseAuthException catch (e) {
+      throw UFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw UFirebaseException(e.code).message;
+    } on FormatException catch (_) {
       throw UFormatException();
     } on PlatformException catch (e) {
       throw UPlatformException(e.code).message;
@@ -147,13 +173,65 @@ class AuthenticationRepository extends GetxController {
   Future<void> logout() async {
     try {
       await FirebaseAuth.instance.signOut();
-      await GoogleSignIn().signOut();
+      // await GoogleSignIn().signOut();
       Get.offAll(() => LoginScreen());
     } on FirebaseAuthException catch (e) {
       throw UFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
       throw UFirebaseException(e.code).message;
-    } on FormatException catch (e) {
+    } on FormatException catch (_) {
+      throw UFormatException();
+    } on PlatformException catch (e) {
+      throw UPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Something went wrong . Please try gain';
+    }
+  }
+
+//   Future<void> logout() async {
+//   try {
+//     print("Logout Started");
+
+//     print("Firebase SignOut...");
+//     await FirebaseAuth.instance.signOut();
+//     print("Firebase SignOut Successful");
+
+//     print("Google SignIn status check...");
+//     final googleSignedIn = await GoogleSignIn().isSignedIn();
+//     print("Google Signed In: $googleSignedIn");
+
+//     if (googleSignedIn) {
+//       print("Google SignOut...");
+//       await GoogleSignIn().signOut();
+//       print("Google SignOut Successful");
+//     } else {
+//       print("No Google account logged in");
+//     }
+
+//     print("Navigating to Login Screen...");
+//     Get.offAll(() => LoginScreen());
+//     print("Navigation Done!");
+
+//   } catch (e, stack) {
+//     print("Logout Error: $e");
+//     print("Stack Trace: $stack");
+//     throw Exception('Something went wrong. Please try again');
+//   }
+// }
+
+  Future<void> deleteAccount() async {
+    try {
+      await UserRepository.instance.removeUserRecord(currentUser!.uid);
+      String publicId = UserController.instance.user.value.publicId;
+      if (publicId.isNotEmpty) {
+        UserRepository.instance.deleteProfilePicture(publicId);
+      }
+      await _auth.currentUser?.delete();
+    } on FirebaseAuthException catch (e) {
+      throw UFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw UFirebaseException(e.code).message;
+    } on FormatException catch (_) {
       throw UFormatException();
     } on PlatformException catch (e) {
       throw UPlatformException(e.code).message;

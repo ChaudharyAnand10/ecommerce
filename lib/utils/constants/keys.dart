@@ -15,11 +15,11 @@ class UKeys{
   static const String rememberMeEmail = 'rememberEmail';
   static const String rememberMePassword = 'rememberPassword';
 
-  static const String cloudName = 'dx4o5amce';
+  static const String cloudName = 'dmiazpnmk';
   static const String uploadPreset = 'upload_image';
   static const String profileFolder = 'Profile Pictures';
-  static const String apiKey = 'YOUR_API_KEY';
-  static const String apiSecret = 'YOUR_API_SECRET';
+  static const String apiKey = '735811177424672';
+  static const String apiSecret = '-gUBkkLU0x31m88qA02J1r2CAhM';
 
 
   static const String categoryFolder = 'Category Pictures';

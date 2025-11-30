@@ -1,4 +1,9 @@
+import 'package:ecommerce/common/widgets/shimmer/shimmer_effect.dart';
+import 'package:ecommerce/features/personalization/controllers/user_controller.dart';
+import 'package:ecommerce/utils/constants/sizes.dart';
+import 'package:ecommerce/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../../../common/widgets/appbar/appbar.dart';
 import '../../../../../common/widgets/products/cart/cart_counter_icon.dart';
@@ -12,22 +17,32 @@ class UHomeAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(UserController());
     return UAppBar(
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(UTexts.homeAppBarTitle, style: Theme.of(context).textTheme.labelMedium!.apply(color: UColors.grey)),
-          Text(UTexts.homeAppBarSubTitle, style: Theme.of(context).textTheme.headlineSmall!.apply(color: UColors.white)),
+          Text(UHelperFunctions.getGreetingMessage(),
+              style: Theme.of(context)
+                  .textTheme
+                  .labelMedium!
+                  .apply(color: UColors.grey)),
 
+                  SizedBox(height: USizes.spaceBtwItems/3,),
+          Obx(() {
+            if (controller.profileLoading.value) {
+              return UShimmerEffect(width: 80, height: 15);
+            }
 
+            return Text(controller.user.value.fullName,
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall!
+                    .apply(color: UColors.white));
+          }),
         ],
       ),
-
-
-      actions: [
-        UCartCounterIcon()
-      ],
-
+      actions: [UCartCounterIcon()],
     );
   }
 }

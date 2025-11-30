@@ -37,11 +37,11 @@ class ULoginForm extends StatelessWidget {
             ()=> TextFormField(
               controller: controller.password,
               obscureText: controller.isPasswordVisible.value,
-              validator: (value) => UValidator.validateEmptyText('Password' ,value),
+              validator: (value) => UValidator.validateEmptyText('Password',value),
               decoration: InputDecoration(
                 prefixIcon: Icon(Iconsax.password_check),
                 labelText: UTexts.password,
-                suffixIcon: IconButton(onPressed: ()=>controller.isPasswordVisible.toggle(), icon: Icon(controller.isPasswordVisible.value ?  Iconsax.eye_slash : Iconsax.eye)),
+                suffixIcon: IconButton(onPressed: ()=>controller.isPasswordVisible.toggle(), icon: Icon(controller.isPasswordVisible.value ?  Iconsax.eye : Iconsax.eye_slash )),
               ),
             ),
           ),

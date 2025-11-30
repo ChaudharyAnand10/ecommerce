@@ -53,6 +53,9 @@ dependencies:
   google_sign_in: 6.3.0
   get_storage: ^2.1.1
   connectivity_plus: ^7.0.0
+  image_picker: ^1.2.1
+  dio: ^5.9.0
+  crypto: ^3.0.7
 
 dev_dependencies:
   flutter_test:

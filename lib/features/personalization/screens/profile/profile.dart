@@ -32,14 +32,21 @@ class ProfileScreen extends StatelessWidget {
               
               
                    SettingsMenuTile(title:'MyAddresses',subtitle: 'set Shopping delivery address' ,icon: Iconsax.safe_home,onTap: () => Get.to(()=>AddressScreen()),),
-                   SettingsMenuTile(title:'My Cart',subtitle: 'Add , remove products and move to checkout' ,icon: Iconsax.safe_home,onTap: (){},),
-                   SettingsMenuTile(title:'My Orders',subtitle: 'In-progress and completed Orders' ,icon: Iconsax.safe_home,onTap: ()=>Get.to(()=>OrderScreen()),),
+                   SettingsMenuTile(title:'My Cart',subtitle: 'Add , remove products and move to checkout' ,icon: Iconsax.shopping_cart,onTap: (){},),
+                   SettingsMenuTile(title:'My Orders',subtitle: 'In-progress and completed Orders' ,icon: Iconsax.shopping_bag,onTap: ()=>Get.to(()=>OrderScreen()),),
                    SizedBox(height: USizes.spaceBtwSections,),
 
 
                    SizedBox(
                     width: double.infinity,
-                    child: OutlinedButton(onPressed: AuthenticationRepository.instance.logout, child: Text('Logout')),
+                    child: OutlinedButton(onPressed: () async {
+                       print("Logout Button Clicked");
+                      try {
+                        await AuthenticationRepository.instance.logout();
+                      } catch (e) {
+                        Get.snackbar("Logout Failed", e.toString());
+                      }
+                    }, child: Text('Logout')),
                    ),
         
                  SizedBox(height: USizes.spaceBtwSections,),
