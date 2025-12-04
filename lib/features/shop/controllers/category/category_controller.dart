@@ -25,11 +25,20 @@ class CategoryController extends GetxController {
       List<CategoryModel> categories = await _repository.getAllCategories();
       allCategories.assignAll(categories);
       featuredCategories.assignAll(categories.where(
-          (category) => category.isFeatured && category.parentId.isEmpty));
+          // (category) => category.isFeatured && category.parentId.isEmpty
+          (category) =>
+    category.isFeatured &&
+    ((category.parentId ?? '').isEmpty)
+
+          )
+          );
+
+          print("Total: ${categories.length}");
+
     } catch (e) {
       USnackBarHelpers.errorSnackBar(title: 'Failed', message: e.toString());
     } finally {
-      isCategoriesLoading.value = true;
+      isCategoriesLoading.value = false;
     }
   }
 }

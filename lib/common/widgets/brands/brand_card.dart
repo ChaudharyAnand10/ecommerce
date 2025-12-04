@@ -1,6 +1,7 @@
 import 'package:ecommerce/common/widgets/custom_shapes/rounded_container.dart';
 import 'package:ecommerce/common/widgets/images/rounded_image.dart';
 import 'package:ecommerce/common/widgets/texts/brand_title_with_verify_icon.dart';
+import 'package:ecommerce/features/shop/models/brand_model.dart';
 import 'package:ecommerce/utils/constants/enums.dart';
 import 'package:ecommerce/utils/constants/images.dart';
 import 'package:ecommerce/utils/constants/sizes.dart';
@@ -9,10 +10,12 @@ import 'package:flutter/material.dart';
 class UBrandCard extends StatelessWidget {
   const UBrandCard({
     super.key,
-    this.showBorder = true,  this.onTap,
+    this.showBorder = true,
+    this.onTap, required this.brand,
   });
   final bool showBorder;
   final VoidCallback? onTap;
+  final BrandModel brand;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +30,8 @@ class UBrandCard extends StatelessWidget {
           children: [
             Flexible(
                 child: URondedImage(
-              imageUrl: UImages.bataLogo,
+              imageUrl: brand.image,
+              isNetworkImage: true,
               backgroundColour: Colors.transparent,
             )),
             SizedBox(width: USizes.spaceBtwItems / 2),
@@ -37,11 +41,11 @@ class UBrandCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   UBrandTitleWithVerifiedIcon(
-                    title: 'Bata',
+                    title: brand.name,
                     brandTextSize: TextSizes.large,
                   ),
                   Text(
-                    '172 products',
+                    '${brand.productsCount} products',
                     style: Theme.of(context).textTheme.labelMedium,
                     overflow: TextOverflow.ellipsis,
                   )

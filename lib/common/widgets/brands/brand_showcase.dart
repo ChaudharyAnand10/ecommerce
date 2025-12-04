@@ -1,5 +1,6 @@
 import 'package:ecommerce/common/widgets/brands/brand_card.dart';
 import 'package:ecommerce/common/widgets/custom_shapes/rounded_container.dart';
+import 'package:ecommerce/features/shop/models/brand_model.dart';
 import 'package:ecommerce/utils/constants/colors.dart';
 import 'package:ecommerce/utils/constants/images.dart';
 import 'package:ecommerce/utils/constants/sizes.dart';
@@ -26,6 +27,7 @@ class UBrandShowCase extends StatelessWidget {
         children: [
           UBrandCard(
             showBorder: false,
+            brand: BrandModel.empty(),
           ),
           Row(
             children: images.map((image)=>buildBrandImage(dark , image)).toList(),

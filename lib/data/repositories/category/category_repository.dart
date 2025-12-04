@@ -36,11 +36,9 @@ class CategoryRepository extends GetxController {
             .doc(category.id)
             .set(category.toJson());
       }
-    } on FirebaseAuthException catch (e) {
-      throw UFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
       throw UFirebaseException(e.code).message;
-    } on FormatException catch (e) {
+    } on FormatException catch (_) {
       throw UFormatException();
     } on PlatformException catch (e) {
       throw UPlatformException(e.code).message;
@@ -61,8 +59,6 @@ class CategoryRepository extends GetxController {
       }
 
       return [];
-    } on FirebaseAuthException catch (e) {
-      throw UFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
       throw UFirebaseException(e.code).message;
     } on FormatException catch (e) {
