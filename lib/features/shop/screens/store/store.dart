@@ -16,6 +16,7 @@ import 'package:ecommerce/features/shop/controllers/brand/brand_controller.dart'
 import 'package:ecommerce/features/shop/controllers/category/category_controller.dart';
 import 'package:ecommerce/features/shop/models/brand_model.dart';
 import 'package:ecommerce/features/shop/screens/brands/all_brands.dart';
+import 'package:ecommerce/features/shop/screens/brands/brand_products.dart';
 import 'package:ecommerce/features/shop/screens/store/widgets/category_tab.dart';
 // import 'package:ecommerce/features/shop/screens/home/widgets/home_appbar.dart';
 // import 'package:ecommerce/features/shop/screens/home/widgets/home_categories.dart';
@@ -102,6 +103,7 @@ class StoreScreen extends StatelessWidget {
                                             width: USizes.brandCardWidth,
                                             child: UBrandCard(
                                               brand: brand,
+                                               onTap: () => Get.to(() => BrandProductsScreen(title: brand.name , brand:brand ,)),
                                             ));
                                       });
                                 }),
