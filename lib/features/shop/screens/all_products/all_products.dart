@@ -1,28 +1,50 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce/common/style/padding.dart';
 import 'package:ecommerce/common/widgets/appbar/appbar.dart';
-import 'package:ecommerce/common/widgets/layouts/grid_layout.dart';
-import 'package:ecommerce/common/widgets/products/product_cards/product_card_vertical.dart';
 import 'package:ecommerce/common/widgets/products/sortable_products.dart';
-import 'package:ecommerce/utils/constants/sizes.dart';
+import 'package:ecommerce/common/widgets/shimmer/vertical_product_shimmer.dart';
+import 'package:ecommerce/features/shop/controllers/product/all_products_controller.dart';
+import 'package:ecommerce/features/shop/models/product_model.dart';
+import 'package:ecommerce/utils/helpers/cloud_helper_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class AllProductsScreen extends StatelessWidget {
-  const AllProductsScreen({super.key});
+  const AllProductsScreen(
+      {super.key, this.futureMethod, this.query, required this.title});
+
+  final String title;
+  final Future<List<ProductModel>>? futureMethod;
+  final Query? query;
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(AllProductsController());
     return Scaffold(
       appBar: UAppBar(
         showBackArrow: true,
         title: Text(
-          'Popular Products',
+          title,
           style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: UPadding.screenPadding,
-          child: USortableProducts(),
+          child: FutureBuilder(
+            future: futureMethod ?? controller.fetchProductsByQuery(query),
+            builder: (context, snapshot) {
+              const loader = UVerticalProductShimmer();
+              final widget = UCloudHelperFunctions.checkMultiRecordState(
+                  snapshot: snapshot, loader: loader);
+              if (widget != null) return widget;
+
+              List<ProductModel> product = snapshot.data!;
+              return USortableProducts(
+                products:product,
+              );
+            },
+          ),
         ),
       ),
     );

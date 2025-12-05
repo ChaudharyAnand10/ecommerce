@@ -23,7 +23,7 @@ class BrandProductsScreen extends StatelessWidget {
               UBrandCard(brand: BrandModel.empty(),),
               SizedBox(height: USizes.spaceBtwSections,),
 
-             USortableProducts(),
+             USortableProducts(products: []),
 
             ],
           ),
