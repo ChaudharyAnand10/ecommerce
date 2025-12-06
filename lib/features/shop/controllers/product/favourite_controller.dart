@@ -22,7 +22,8 @@ class FavouriteController extends GetxController {
   }
 
   Future<void> initFavourites() async {
-    String encodedFavourites = await _storage.read('favourites');
+    String? encodedFavourites = _storage.read('favourites');
+    if (encodedFavourites == null) return;
     Map<String, dynamic> storedFavourites =
         jsonDecode(encodedFavourites) as Map<String, dynamic>;
 
@@ -54,11 +55,9 @@ class FavouriteController extends GetxController {
     return favourites[productId] ?? false;
   }
 
-
   Future<List<ProductModel>> getFavouriteProducts() async {
-
     final productIds = favourites.keys.toList();
 
     return await ProductRepository.instance.getFavouriteProducts(productIds);
-}
+  }
 }

@@ -2,7 +2,6 @@ import 'package:ecommerce/common/widgets/shimmer/brands_shimmer.dart';
 import 'package:ecommerce/features/shop/controllers/category/category_controller.dart';
 import 'package:ecommerce/features/shop/models/category_model.dart';
 import 'package:ecommerce/features/shop/screens/sub_category/sub_category.dart';
-import 'package:ecommerce/utils/constants/images.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -55,7 +54,7 @@ class UHomeCategories extends StatelessWidget {
                     title: category.name,
                     image: category.image,
                     textColor: UColors.white,
-                    onTap: () => Get.to(() => SubCategoryScreen()),
+                    onTap: () => Get.to(() => SubCategoryScreen(category:category)),
                   );
                 },
               ),

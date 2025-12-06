@@ -6,7 +6,6 @@ import 'package:ecommerce/features/shop/models/brand_category_model.dart';
 import 'package:ecommerce/features/shop/models/category_model.dart';
 import 'package:ecommerce/features/shop/models/product_category_model.dart';
 import 'package:ecommerce/utils/constants/keys.dart';
-import 'package:ecommerce/utils/exceptions/firebase_auth_exceptions.dart';
 import 'package:ecommerce/utils/exceptions/firebase_exceptions.dart';
 import 'package:ecommerce/utils/exceptions/format_exceptions.dart';
 import 'package:ecommerce/utils/exceptions/platform_exceptions.dart';
@@ -34,7 +33,7 @@ class CategoryRepository extends GetxController {
       }
     } on FirebaseException catch (e) {
       throw UFirebaseException(e.code).message;
-    } on FormatException catch (e) {
+    } on FormatException catch (_) {
       throw UFormatException();
     } on PlatformException catch (e) {
       throw UPlatformException(e.code).message;
@@ -56,7 +55,7 @@ class CategoryRepository extends GetxController {
       }
     } on FirebaseException catch (e) {
       throw UFirebaseException(e.code).message;
-    } on FormatException catch (e) {
+    } on FormatException catch (_) {
       throw UFormatException();
     } on PlatformException catch (e) {
       throw UPlatformException(e.code).message;
@@ -105,7 +104,7 @@ class CategoryRepository extends GetxController {
       return [];
     } on FirebaseException catch (e) {
       throw UFirebaseException(e.code).message;
-    } on FormatException catch (e) {
+    } on FormatException catch (_) {
       throw UFormatException();
     } on PlatformException catch (e) {
       throw UPlatformException(e.code).message;
@@ -113,6 +112,38 @@ class CategoryRepository extends GetxController {
       throw 'Something went wrong . Please try gain';
     }
   }
+
+  
+  
+  Future<List<CategoryModel>> getSubCategories(String categoryId) async {
+    try {
+      final query = await _db.collection(UKeys.categoryCollection).where('parentId',isEqualTo:categoryId ).get();
+
+      if (query.docs.isNotEmpty) {
+        List<CategoryModel> categories = query.docs
+            .map((document) => CategoryModel.fromSnapshot(document))
+            .toList();
+        return categories;
+      }
+
+      return [];
+    } on FirebaseException catch (e) {
+      throw UFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw UFormatException();
+    } on PlatformException catch (e) {
+      throw UPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Something went wrong . Please try gain';
+    }
+  }
+
+
+
+
+
+
+
 }
 
 // [FetchCategories] - Function to fetch list of categories
