@@ -1,6 +1,7 @@
 import 'package:ecommerce/common/widgets/custom_shapes/rounded_container.dart';
 import 'package:ecommerce/common/widgets/icons/circular_icon.dart';
 import 'package:ecommerce/common/widgets/images/rounded_image.dart';
+import 'package:ecommerce/common/widgets/products/favourite/favourite_icon.dart';
 import 'package:ecommerce/common/widgets/texts/brand_title_with_verify_icon.dart';
 import 'package:ecommerce/common/widgets/texts/product_price_tex.dart';
 import 'package:ecommerce/common/widgets/texts/product_title_text.dart';
@@ -57,10 +58,7 @@ class UProductCardHorizontal extends StatelessWidget {
                 Positioned(
                   right: 0,
                   top: 0,
-                  child: UCircularIcon(
-                    icon: Iconsax.heart5,
-                    color: Colors.red,
-                  ),
+                  child: UFavouriteIcon(productId: '',),
                 )
 
 

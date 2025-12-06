@@ -22,15 +22,9 @@ import 'package:ecommerce/features/shop/screens/store/widgets/category_tab.dart'
 // import 'package:ecommerce/features/shop/screens/home/widgets/home_categories.dart';
 // import 'package:ecommerce/features/shop/screens/home/widgets/primary_header_container.dart';
 import 'package:ecommerce/features/shop/screens/store/widgets/store_primary_header.dart';
-// import 'package:ecommerce/utils/constants/colors.dart';
-// import 'package:ecommerce/utils/constants/images.dart';
+
 import 'package:ecommerce/utils/constants/sizes.dart';
-// import 'package:ecommerce/utils/helpers/device_helpers.dart';
-// import 'package:ecommerce/utils/helpers/helper_functions.dart';
-// import 'package:ecommerce/utils/constants/colors.dart';
-// import 'package:ecommerce/utils/constants/enums.dart';
-// import 'package:ecommerce/utils/constants/images.dart';
-// import 'package:ecommerce/utils/constants/sizes.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -125,7 +119,7 @@ class StoreScreen extends StatelessWidget {
             body: TabBarView(
                 children: controller.featuredCategories
                     .map(
-                      (category) => UCategoryTab(),
+                      (category) => UCategoryTab(category: category,),
                     )
                     .toList())),
       ),

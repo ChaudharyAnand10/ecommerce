@@ -205,7 +205,72 @@ return [];
     throw 'Something went wrong. Please try again';
     }
     }
+  
 
+    
+  Future<List<ProductModel>> getProductsForCategory({required String categoryId, int limit = -1}) async{
+    try{
+
+
+      final productCategoryQuery = limit == -1
+    ? await _db.collection(UKeys.productCategoryCollection).where('categoryId', isEqualTo: categoryId).get()
+    : await _db.collection(UKeys.productCategoryCollection).where('categoryId', isEqualTo: categoryId).limit(limit).get();
+
+     List<String> productIds = productCategoryQuery.docs.map((doc) => doc['productId'] as String).toList();
+     final productQuery = await _db.collection(UKeys.productsCollection).where(FieldPath.documentId, whereIn: productIds).get();
+     List<ProductModel> products = productQuery.docs.map((doc) => ProductModel.fromSnapshot(doc)).toList();
+
+     return products;
+
+
+
+    
+    
+    } on FirebaseException catch(e){
+    throw UFirebaseException(e.code).message;
+    }
+     on FormatException catch(__){
+    throw UFormatException();
+    }
+    on PlatformException catch(e){
+    throw UPlatformException(e.code).message;
+    }
+     catch(e){
+    throw 'Something went wrong. Please try again';
+    }
+    }
+
+ 
+
+   /// [Upload] - Function to upload list of products to Firebase
+  Future<List<ProductModel>> getFavouriteProducts(List<String> productsIds) async {
+    try {
+
+      final query = await _db.collection(UKeys.productsCollection).where(FieldPath.documentId , whereIn: productsIds).get();
+
+      if(query.docs.isNotEmpty){
+          List<ProductModel> products = query.docs.map((document) => ProductModel.fromSnapshot(document)).toList();
+          return products;
+      }
+      return [];
+
+
+
+      
+    } on FirebaseException catch (e) {
+      print('1 exception');
+      throw UFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      print('2 exception');
+      throw UFormatException();
+    } on PlatformException catch (e) {
+      print('3 exception');
+      throw UPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Something went wrong . Please try gain';
+    }
+  }
+ 
  
  
 }

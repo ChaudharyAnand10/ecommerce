@@ -1,13 +1,11 @@
 import 'package:ecommerce/common/widgets/custom_shapes/rounded_container.dart';
-import 'package:ecommerce/common/widgets/icons/circular_icon.dart';
 import 'package:ecommerce/common/widgets/images/rounded_image.dart';
-// import 'package:ecommerce/common/widgets/texts/brand_title_text.dart';
+import 'package:ecommerce/common/widgets/products/favourite/favourite_icon.dart';
 import 'package:ecommerce/common/widgets/texts/brand_title_with_verify_icon.dart';
 import 'package:ecommerce/features/shop/controllers/product/product_controller.dart';
 import 'package:ecommerce/features/shop/models/product_model.dart';
 import 'package:ecommerce/features/shop/screens/product_details/product_details.dart';
 import 'package:ecommerce/utils/constants/colors.dart';
-import 'package:ecommerce/utils/constants/images.dart';
 import 'package:ecommerce/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -75,10 +73,7 @@ class UProductCardVertical extends StatelessWidget {
                   Positioned(
                     right: 0,
                     top: 0,
-                    child: UCircularIcon(
-                      icon: Iconsax.heart5,
-                      color: Colors.red,
-                    ),
+                    child: UFavouriteIcon(productId: product.id),
                   )
                 ],
               ),

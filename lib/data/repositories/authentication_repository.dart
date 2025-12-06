@@ -38,13 +38,16 @@ class AuthenticationRepository extends GetxController {
     // Get.put(BannerRepository()).uploadBanners(UDummyData.banner);
     // Get.put(BrandRepository()).uploadBrands(UDummyData.brands);
     // Get.put(ProductRepository()).uploadProducts(UDummyData.products);
+    // Get.put(CategoryRepository()).uploadBrandCategory(UDummyData.brandCategory);
+    // Get.put(CategoryRepository()).uploadProductCategory(UDummyData.productCategory);
   }
 
-  void screenRedirect() {
+  void screenRedirect() async {
     final user = _auth.currentUser;
     if (user != null) {
       if (user.emailVerified) {
         Get.offAll(() => NavigationMenu());
+         await GetStorage.init(user.uid);
       } else {
         Get.offAll(() => VerifyEmailScreen(
               email: user.email,

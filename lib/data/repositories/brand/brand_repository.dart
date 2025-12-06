@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce/data/services/cloudinary_services.dart';
+import 'package:ecommerce/features/shop/models/brand_category_model.dart';
 import 'package:ecommerce/features/shop/models/brand_model.dart';
 import 'package:ecommerce/utils/constants/keys.dart';
 import 'package:ecommerce/utils/exceptions/firebase_exceptions.dart';
@@ -105,6 +106,44 @@ class BrandRepository extends GetxController {
       throw 'Something went wrong . Please try gain';
     }
   }
+
+ 
+ 
+  Future<List<BrandModel>> fetchBrandsForCategory(String categoryId) async {
+    try {
+
+          // Query to get all documents where category `m` matches the provided categoryId
+           final brandCategoryQuery = await _db.collection(UKeys.brandCategoryCollection).where('categoryId', isEqualTo: categoryId).get();
+
+           List<BrandCategoryModel> brandCategories = brandCategoryQuery.docs.map((doc) => BrandCategoryModel.fromSnapshot(doc)).toList();
+
+           List<String> brandIds = brandCategories.map((brandCategory) => brandCategory.brandId).toList();
+
+           final brandsQuery = await _db.collection(UKeys.brandsCollection).where(FieldPath.documentId, whereIn: brandIds).limit(2).get();
+
+           List<BrandModel> brands = brandsQuery.docs.map((doc) => BrandModel.fromSnapshot(doc)).toList();
+
+           return brands;
+
+
+     
+    } on FirebaseException catch (e) {
+      throw UFirebaseException(e.code).message;
+    } on FormatException catch (e) {
+      throw UFormatException();
+    } on PlatformException catch (e) {
+      throw UPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Something went wrong . Please try gain';
+    }
+  }
+
+ 
+
+
+
+
+
+
 }
 
-// [Fetch] - Function to get all brands
