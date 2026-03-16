@@ -7,48 +7,46 @@ import 'package:iconsax/iconsax.dart';
 
 class UPRoductQuantityWithAddAndRemove extends StatelessWidget {
   const UPRoductQuantityWithAddAndRemove({
-    super.key,
-  
+    super.key, required this.quantity, this.add, this.remove,
   });
 
-  
+  final int quantity;
+  final VoidCallback? add, remove;
 
   @override
   Widget build(BuildContext context) {
-        final dark = UHelperFunctions.isDarkMode(context);
+    final dark = UHelperFunctions.isDarkMode(context);
 
     return Row(
       children: [
-            
-    UCircularIcon(
-      icon: Iconsax.minus,
-      width: 32,
-      height: 32,
-      size: USizes.iconSm,
-      color: dark ? UColors.white : UColors.black,
-      backgroundColor:
-          dark ? UColors.darkerGrey : UColors.light,
-    
-    ),
-    SizedBox(width: USizes.spaceBtwItems,),
-    
-    
-    
-    Text('2', style: Theme.of(context).textTheme.titleSmall,),
-    SizedBox(width: USizes.spaceBtwItems,),
-    
-    
-    
-    UCircularIcon(
-      icon: Iconsax.add,
-      width: 32,
-      height: 32,
-      size: USizes.iconSm,
-      color: UColors.white ,
-      backgroundColor:
-          UColors.primary
-    
-    ),
+        UCircularIcon(
+          icon: Iconsax.minus,
+          width: 32,
+          height: 32,
+          size: USizes.iconSm,
+          color: dark ? UColors.white : UColors.black,
+          backgroundColor: dark ? UColors.darkerGrey : UColors.light,
+          onPressed: remove,
+        ),
+        SizedBox(
+          width: USizes.spaceBtwItems,
+        ),
+        Text(
+          quantity.toString(),
+          style: Theme.of(context).textTheme.titleSmall,
+        ),
+        SizedBox(
+          width: USizes.spaceBtwItems,
+        ),
+        UCircularIcon(
+            icon: Iconsax.add,
+            width: 32,
+            height: 32,
+            size: USizes.iconSm,
+            color: UColors.white,
+            backgroundColor: UColors.primary,
+            onPressed: add,
+            ),
       ],
     );
   }

@@ -1,3 +1,4 @@
+import 'package:ecommerce/features/shop/controllers/cart/cart_controller.dart';
 import 'package:ecommerce/features/shop/screens/cart/cart.dart';
 import 'package:ecommerce/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
@@ -13,19 +14,14 @@ class UCartCounterIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool dark =UHelperFunctions.isDarkMode(context);
+    final bool dark = UHelperFunctions.isDarkMode(context);
+    final controller = Get.put(CartController());
     return Stack(
       children: [
-
         IconButton(
-            onPressed: ()=>Get.to(()=>CartScreen()),
-            icon:  Icon(Iconsax.shopping_bag),
-            color: UColors.light
-        ),
-
-
-
-
+            onPressed: () => Get.to(() => CartScreen()),
+            icon: Icon(Iconsax.shopping_bag),
+            color: UColors.light),
         Positioned(
           right: 6.0,
           child: Container(
@@ -34,13 +30,19 @@ class UCartCounterIcon extends StatelessWidget {
             decoration: BoxDecoration(
               color: dark ? UColors.dark : UColors.light,
               shape: BoxShape.circle,
-
             ),
-            child: Center(child: Text('2',style: Theme.of(context).textTheme.labelLarge!.apply(fontSizeFactor: 0.8 , color: dark ? UColors.light : UColors.dark),)),
+            child: Center(
+                child: Obx(
+                  ()=> Text(
+                                controller.noOfCartItems.value.toString(),
+                                style: Theme.of(context).textTheme.labelLarge!.apply(
+                    fontSizeFactor: 0.8,
+                    color: dark ? UColors.light : UColors.dark),
+                              ),
+                )),
           ),
         )
       ],
-
     );
   }
 }

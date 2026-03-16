@@ -1,8 +1,16 @@
 import 'package:ecommerce/common/widgets/custom_shapes/rounded_container.dart';
+import 'package:ecommerce/common/widgets/loaders/animation_loader.dart';
+import 'package:ecommerce/features/shop/controllers/order/order_controller.dart';
+import 'package:ecommerce/features/shop/models/order_model.dart';
+import 'package:ecommerce/navigation_menu.dart';
 import 'package:ecommerce/utils/constants/colors.dart';
+import 'package:ecommerce/utils/constants/enums.dart';
+import 'package:ecommerce/utils/constants/images.dart';
 import 'package:ecommerce/utils/constants/sizes.dart';
+import 'package:ecommerce/utils/helpers/cloud_helper_functions.dart';
 import 'package:ecommerce/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 class UOrdersListItems extends StatelessWidget {
@@ -11,104 +19,145 @@ class UOrdersListItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dark = UHelperFunctions.isDarkMode(context);
-    return ListView.separated(
-      separatorBuilder: (context, index) => SizedBox(height: USizes.spaceBtwItems,),
-      itemCount:10 ,
-      itemBuilder: (context, index) {
+    final controller = Get.put(OrderController());
+    return FutureBuilder(
+      
+      future: controller.fetchUserOrders(),
+      builder: (context, snapshot) {
+        
+        final nothingFound =
+            UAnimationLoader(text: 'No order yet!',
+             showActionButton: true,
+             actionText: 'Lets Fill it',
+             animation: UImages.pencilAnimation,
+             onActionPressed: ()=>Get.offAll(()=>NavigationMenu()),
+             );
 
-        return URoundedContainer(
-      showBorder: true,
-      backgroundColor: dark ? UColors.dark : UColors.light,
-      padding: EdgeInsets.all(USizes.md),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // first row
-          Row(
-            children: [
-              Icon(Iconsax.ship),
-              SizedBox(width: USizes.spaceBtwItems/2,),
+        final widget = UCloudHelperFunctions.checkMultiRecordState(
+            snapshot: snapshot, nothingFound: nothingFound);
+        if (widget != null) return widget;
 
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Processing ' , style: Theme.of(context).textTheme.bodyLarge!.apply(color: UColors.primary , fontWeightDelta: 1),),
-                    
-                    Text('01 Jan 2025' , style: Theme.of(context).textTheme.headlineSmall,)
-                
-                  ],
-                ),
-              ),
+        List<OrderModel> orders = snapshot.data!;
 
-              IconButton(onPressed: (){}, icon: Icon(Iconsax.arrow_right_34 , size: USizes.iconSm,)),
-
-
-            ],
+        return ListView.separated(
+          separatorBuilder: (context, index) => SizedBox(
+            height: USizes.spaceBtwItems,
           ),
+          itemCount: orders.length,
+          itemBuilder: (context, index) {
+            OrderModel order = orders[index];
 
-          SizedBox(height: USizes.spaceBtwItems,),
-
-          // second row
-
-
-       Row(
-        children: [
-              Expanded(
-                child: Row(
-                            children: [
-                Icon(Iconsax.tag),
-                SizedBox(width: USizes.spaceBtwItems/2,),
-                
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            return URoundedContainer(
+              showBorder: true,
+              backgroundColor: dark ? UColors.dark : UColors.light,
+              padding: EdgeInsets.all(USizes.md),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // first row
+                  Row(
                     children: [
-                      Text('Order ' , style: Theme.of(context).textTheme.labelMedium),
-                      
-                      Text('[#243189]' , style: Theme.of(context).textTheme.titleMedium,)
-                  
+                      Icon(Iconsax.ship),
+                      SizedBox(
+                        width: USizes.spaceBtwItems / 2,
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              order.orderStatusText,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .apply(
+                                      color: UColors.primary,
+                                      fontWeightDelta: 1),
+                            ),
+                            Text(
+                              order.formattedOrderDate,
+                              style: Theme.of(context).textTheme.headlineSmall,
+                            )
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                          onPressed: () {},
+                          icon: Icon(
+                            Iconsax.arrow_right_34,
+                            size: USizes.iconSm,
+                          )),
                     ],
                   ),
-                ),
-                
-                
-                
-                            ],
-                          ),
-              ),
 
-
-              Expanded(
-                child: Row(
-                            children: [
-                Icon(Iconsax.calendar),
-                SizedBox(width: USizes.spaceBtwItems/2,),
-                
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Shipping Date ' , style: Theme.of(context).textTheme.labelMedium),
-                      
-                      Text('06 Jan 2025' , style: Theme.of(context).textTheme.titleMedium,)
-                  
-                    ],
+                  SizedBox(
+                    height: USizes.spaceBtwItems,
                   ),
-                ),
-                
-                
-                
-                            ],
-                          ),
-              ),
-        ],
-       )
 
-        ],
-      ),
+                  // second row
+
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Icon(Iconsax.tag),
+                            SizedBox(
+                              width: USizes.spaceBtwItems / 2,
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Order ',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelMedium),
+                                  Text(
+                                    order.id,
+                                    style:
+                                        Theme.of(context).textTheme.titleMedium,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Icon(Iconsax.calendar),
+                            SizedBox(
+                              width: USizes.spaceBtwItems / 2,
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Shipping Date ',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelMedium),
+                                  Text(
+                                    order.formattedDeliveryDate,
+                                    style:
+                                        Theme.of(context).textTheme.titleMedium,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            );
+          },
+        );
+      },
     );
-
-    },);
   }
 }

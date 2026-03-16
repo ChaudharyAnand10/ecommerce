@@ -4,6 +4,7 @@ import 'package:ecommerce/features/personalization/screens/address/address.dart'
 import 'package:ecommerce/features/personalization/screens/profile/widgets/profile_primary_header.dart';
 import 'package:ecommerce/features/personalization/screens/profile/widgets/settings_menu_tile.dart';
 import 'package:ecommerce/features/personalization/screens/profile/widgets/user_profile_tile.dart';
+import 'package:ecommerce/features/shop/screens/cart/cart.dart';
 import 'package:ecommerce/features/shop/screens/order/order.dart';
 import 'package:ecommerce/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class ProfileScreen extends StatelessWidget {
               
               
                    SettingsMenuTile(title:'MyAddresses',subtitle: 'set Shopping delivery address' ,icon: Iconsax.safe_home,onTap: () => Get.to(()=>AddressScreen()),),
-                   SettingsMenuTile(title:'My Cart',subtitle: 'Add , remove products and move to checkout' ,icon: Iconsax.shopping_cart,onTap: (){},),
+                   SettingsMenuTile(title:'My Cart',subtitle: 'Add , remove products and move to checkout' ,icon: Iconsax.shopping_cart,onTap: ()=>Get.to(()=>CartScreen()),),
                    SettingsMenuTile(title:'My Orders',subtitle: 'In-progress and completed Orders' ,icon: Iconsax.shopping_bag,onTap: ()=>Get.to(()=>OrderScreen()),),
                    SizedBox(height: USizes.spaceBtwSections,),
 

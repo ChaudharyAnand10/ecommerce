@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 import '../../../../../common/widgets/appbar/appbar.dart';
 import '../../../../../common/widgets/products/cart/cart_counter_icon.dart';
 import '../../../../../utils/constants/colors.dart';
-import '../../../../../utils/constants/texts.dart';
 
 class UHomeAppBar extends StatelessWidget {
   const UHomeAppBar({

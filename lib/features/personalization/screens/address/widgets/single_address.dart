@@ -1,60 +1,82 @@
 import 'package:ecommerce/common/widgets/custom_shapes/rounded_container.dart';
+import 'package:ecommerce/features/personalization/controllers/address_controller.dart';
+import 'package:ecommerce/features/personalization/models/address_model.dart';
 import 'package:ecommerce/utils/constants/colors.dart';
 import 'package:ecommerce/utils/constants/sizes.dart';
 import 'package:ecommerce/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:get/state_manager.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:iconsax/iconsax.dart';
 
 class USingleAddress extends StatelessWidget {
   const USingleAddress({
     super.key,
-    required this.isSelected,
+    required this.address,
+    required this.onTap,
   });
 
-  final bool isSelected;
+  final AddressModel address;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final dark = UHelperFunctions.isDarkMode(context);
-    return URoundedContainer(
-        width: double.infinity,
-        showBorder: true,
-        backgroundColor: isSelected
-            ? UColors.primary.withValues(alpha: 0.5)
-            : Colors.transparent,
-        borderColor: isSelected ? Colors.transparent : dark ? UColors.darkerGrey : UColors.grey,
-        padding: EdgeInsets.all(USizes.md),
-        child: Stack(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    final controller = AddressController.instance;
+    return Obx(() {
+      String selectedAddressId = controller.selectedAddress.value.id;
+      bool isSelected = selectedAddressId == address.id;
+
+      return InkWell(
+        onTap: onTap,
+        child: URoundedContainer(
+            width: double.infinity,
+            showBorder: true,
+            backgroundColor: isSelected
+                ? UColors.primary.withValues(alpha: 0.5)
+                : Colors.transparent,
+            borderColor: isSelected
+                ? Colors.transparent
+                : dark
+                    ? UColors.darkerGrey
+                    : UColors.grey,
+            padding: EdgeInsets.all(USizes.md),
+            child: Stack(
               children: [
-                Text(
-                  'UnKnown Pro',
-                  style: Theme.of(context).textTheme.titleLarge,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      address.name,
+                      style: Theme.of(context).textTheme.titleLarge,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    SizedBox(
+                      height: USizes.spaceBtwItems / 2,
+                    ),
+                    Text(
+                      address.phoneNumber,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    SizedBox(
+                      height: USizes.spaceBtwItems / 2,
+                    ),
+                    Text(
+                      address.toString(),
+                    ),
+                  ],
                 ),
-                SizedBox(height: USizes.spaceBtwItems/2,),
-                Text(
-                  '+91 8004067534',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                SizedBox(height: USizes.spaceBtwItems/2,),
-                Text(
-                  'House No. 35 this is a place',
-                  
-                ),
+                if (isSelected)
+                  Positioned(
+                      top: 0,
+                      bottom: 0,
+                      right: 6,
+                      child: Icon(Iconsax.tick_circle5))
               ],
-            ),
-            if (isSelected)
-              Positioned(
-                  top: 0,
-                  bottom: 0,
-                  right: 6,
-                  child: Icon(Iconsax.tick_circle5))
-          ],
-        ));
+            )),
+      );
+    });
   }
 }
